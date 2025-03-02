@@ -5,49 +5,41 @@
 //  Created by Tornike Gomareli on 02.03.25.
 //
 
-
-//  OverlayerRootView.swift
 import SwiftUI
 
-struct OverlayerRootView<Content: View>: View {
-    private let content: Content
-    private let manager = OverlayerManager()
-    
-    init(@ViewBuilder content: @escaping () -> Content) {
-        self.content = content()
-    }
-    
-    var body: some View {
-        content
-            .environment(manager)
-            .task(configureWindow)
-    }
-    
-    @MainActor
-    private func configureWindow() {
-        guard manager.window == nil,
-              let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
-        else { return }
-        
-        let window = PassThroughWindow(windowScene: windowScene)
-        window.isHidden = false
-        window.isUserInteractionEnabled = true
-        
-        let rootVC = UIHostingController(rootView: OverlayerContainerView())
-        rootVC.view.backgroundColor = .clear
-        window.rootViewController = rootVC
-        
-        manager.window = window
-    }
+public struct OverlayerRootView<Content: View>: View {
+  var content: Content
+  public init(@ViewBuilder content: @escaping () -> Content) {
+    self.content = content()
+  }
+  
+  public var properties = OverlayerManager()
+
+  public var body: some View {
+    content
+      .environment(properties)
+      .onAppear {
+        if let windowScene = (UIApplication.shared.connectedScenes.first as? UIWindowScene), properties.window == nil {
+          let window = PassThroughWindow(windowScene: windowScene)
+          window.isHidden = false
+          window.isUserInteractionEnabled = true
+          let rootViewController = UIHostingController(rootView: OverlayerViews().environment(properties))
+          rootViewController.view.backgroundColor = .clear
+          window.rootViewController = rootViewController
+          
+          properties.window = window
+        }
+      }
+  }
 }
 
-private struct OverlayerContainerView: View {
-    @Environment(OverlayerManager.self) private var manager
-    
-    var body: some View {
-        ZStack {
-            ForEach(manager.views) { $0.view }
-        }
-        .allowsHitTesting(false)
+private struct OverlayerViews: View {
+  @Environment(OverlayerManager.self) private var properties
+  var body: some View {
+    ZStack {
+      ForEach(properties.views) {
+        $0.view
+      }
     }
+  }
 }
