@@ -151,6 +151,10 @@ Or add it directly through Xcode:
 
 ## Demo Examples
 
+![Simulator Screen Recording - iPhone 16 Pro - 2025-03-03 at 14 10 17](https://github.com/user-attachments/assets/ae683287-e25e-41ac-98a2-b1bdf5d71ef2)
+
+
+
 You can check `OverlayerDemoPreview` for advanced and different type of examples including PiP and full screen cover.
 Check `OverlayerSolutionDemo` for basic solution demo.
 Check `StandardSwiftUILimitationDemo` for the core problem.
