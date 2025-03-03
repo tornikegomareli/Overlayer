@@ -20,7 +20,9 @@ A powerful SwiftUI library that solves one of the most frustrating limitations i
 
 ## The Problem
 
-Standard SwiftUI doesn't provide a clean way to display UI elements above sheets and full screen covers. When you present a modal view:
+Standard SwiftUI doesn't provide a clean way to display UI elements above sheets and full screen covers.
+
+When you present a modal view:
 
 - Any overlays in the parent view become invisible
 - ZStack with high z-index values doesn't help
@@ -34,7 +36,9 @@ This limitation makes it impossible to create:
 
 ## The Solution
 
-Overlayer solves this problem by creating a separate UIWindow that exists above the entire app's view hierarchy. This enables:
+Overlayer solves this problem by creating a separate UIWindow that exists above the entire app's view hierarchy.
+
+This enables:
 
 - Toast notifications that remain visible above sheets and full screen covers
 - Draggable PiP video players that persist across view transitions
@@ -67,12 +71,12 @@ Overlayer provides two main API styles:
 ```swift
 struct ContentView: View {
     @State private var showToast = false
-    
+
     var body: some View {
         VStack {
             Button("Show Toast") {
                 showToast = true
-                
+
                 // Auto-dismiss after 2 seconds
                 DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                     showToast = false
@@ -91,7 +95,7 @@ struct ContentView: View {
 ```swift
 struct ContentView: View {
     @State private var selectedProduct: Product? = nil
-    
+
     var body: some View {
         List(products) { product in
             Button(product.name) {
@@ -105,30 +109,7 @@ struct ContentView: View {
 }
 ```
 
-## Advantages
-
-### 1. True Global Overlays
-
-Overlays created with Overlayer remain visible regardless of what's on screen, including:
-- Sheets
-- Full screen covers
-- Navigation stack transitions
-- TabView changes
-
-### 2. Draggable UI Elements
-
-Perfect for implementing Picture-in-Picture (PiP) video players or floating action buttons that:
-- Can be dragged to any position on screen
-- Stay within screen bounds
-- Remain visible across view transitions
-
-### 3. Consistent API
-
-- Uses familiar SwiftUI binding patterns
-- Seamlessly integrates with your existing SwiftUI code
-- Supports both boolean and optional binding patterns
-
-### 4. Animation Support
+### Animations
 
 All overlays support standard SwiftUI transitions and animations:
 
@@ -165,82 +146,9 @@ Or add it directly through Xcode:
 
 ## Demo Examples
 
-### Toast Above Sheet
-
-Demonstrates how a toast notification remains visible even when a sheet is presented:
-
-```swift
-struct ToastDemoView: View {
-    @State private var showToast = false
-    @State private var showSheet = false
-    
-    var body: some View {
-        VStack {
-            Button("Show Toast Then Sheet") {
-                showToast = true
-                
-                // Show sheet after brief delay
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                    showSheet = true
-                }
-                
-                // Auto-dismiss toast after 2 seconds
-                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                    showToast = false
-                }
-            }
-        }
-        .overlayer(isPresented: $showToast) {
-            ToastView(message: "I stay visible above sheets!")
-        }
-        .sheet(isPresented: $showSheet) {
-            Text("Sheet Content")
-        }
-    }
-}
-```
-
-### Picture-in-Picture Video
-
-Creates a draggable video player that remains on screen regardless of navigation:
-
-```swift
-struct PiPDemoView: View {
-    @State private var showPiP = false
-    
-    var body: some View {
-        Button("Show Picture-in-Picture") {
-            showPiP = true
-        }
-        .overlayer(isPresented: $showPiP) {
-            PictureInPictureView(isPresented: $showPiP)
-        }
-    }
-}
-```
-
-## Advanced Usage
-
-### Overlays from Sheet Content
-
-You can add overlays from sheet content that will appear above the sheet:
-
-```swift
-.sheet(isPresented: $showSheet) {
-    SheetView()
-        .overlayer(isPresented: $showToastOnSheet) {
-            ToastView(message: "Toast on top of sheet!")
-        }
-}
-```
-
-### Customizing Animations
-
-```swift
-.overlayer(isPresented: $showOverlay, animation: .spring(response: 0.3)) {
-    CustomOverlayView()
-}
-```
+You can check `OverlayerDemoPreview` for advanced and different type of examples including PiP and full screen cover.
+Check `OverlayerSolutionDemo` for basic solution demo.
+Check `StandardSwiftUILimitationDemo` for the core problem.
 
 ## How It Works
 
@@ -259,8 +167,8 @@ Overlayer is available under the MIT license. See the LICENSE file for more info
 
 ## Author
 
-Created by [Your Name](https://github.com/tornikegomareli)
+Created by [Tornike](https://github.com/tornikegomareli)
 
 ## Contribution
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+Any kind of contributions, finding bugs, improving API or feature ideas are kindly welcome 🤗
