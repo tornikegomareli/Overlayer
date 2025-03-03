@@ -1,5 +1,10 @@
 # Overlayer
 
+
+<p align="">
+  <img src="https://i.imghippo.com/files/vAZT4325VhI.webp" width="250" height="250" alt="Overlayer Logo">
+</p>
+
 A powerful SwiftUI library that solves one of the most frustrating limitations in SwiftUI: displaying overlays above modal presentations like sheets and full screen covers.
 
 [![Swift Package Manager](https://img.shields.io/badge/Swift_Package_Manager-compatible-orange?style=flat-square)](https://img.shields.io/badge/Swift_Package_Manager-compatible-orange?style=flat-square)
