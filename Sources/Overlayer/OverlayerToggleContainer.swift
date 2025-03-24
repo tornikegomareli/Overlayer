@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 /// Container view that handles displaying an overlay when an optional item is present
-struct OverlayerContainer<Content: View, Item: Equatable, OverlayContent: View>: View {
+public struct OverlayerContainer<Content: View, Item: Equatable, OverlayContent: View>: View {
   var animation: Animation = .default
   @Binding var item: Item?
   @ViewBuilder var content: () -> Content
@@ -19,7 +19,7 @@ struct OverlayerContainer<Content: View, Item: Equatable, OverlayContent: View>:
   @State private var viewID: String?
   @State private var currentItem: Item?
   
-  var body: some View {
+  public var body: some View {
     content()
       .onChange(of: item) { oldValue, newValue in
         if let newValue {
@@ -58,7 +58,7 @@ struct OverlayerContainer<Content: View, Item: Equatable, OverlayContent: View>:
   }
 }
 
-struct OverlayerToggleContainer<Content: View, OverlayContent: View>: View {
+public struct OverlayerToggleContainer<Content: View, OverlayContent: View>: View {
   var animation: Animation = .default
   @Binding var show: Bool
   @ViewBuilder var content: () -> Content
@@ -67,7 +67,7 @@ struct OverlayerToggleContainer<Content: View, OverlayContent: View>: View {
   @Environment(OverlayerManager.self) private var properties
   @State private var viewID: String?
   
-  var body: some View {
+  public var body: some View {
     content()
       .onChange(of: show, initial: true) { oldValue, newValue in
         if newValue {
