@@ -15,6 +15,13 @@ public struct OverlayerContainer<Content: View, Item: Equatable, OverlayContent:
   @ViewBuilder var content: () -> Content
   @ViewBuilder var overlayContent: (Item) -> OverlayContent
   
+  public init(animation: Animation, item: Binding<Item?>, content: @escaping () -> Content, overlayContent: @escaping (Item) -> OverlayContent) {
+    self.animation = animation
+    self._item = item
+    self.content = content
+    self.overlayContent = overlayContent
+  }
+  
   @Environment(OverlayerManager.self) private var properties
   @State private var viewID: String?
   @State private var currentItem: Item?
@@ -63,6 +70,13 @@ public struct OverlayerToggleContainer<Content: View, OverlayContent: View>: Vie
   @Binding var show: Bool
   @ViewBuilder var content: () -> Content
   @ViewBuilder var overlayContent: () -> OverlayContent
+  
+  public init(animation: Animation, show: Binding<Bool>, content: @escaping () -> Content, overlayContent: @escaping () -> OverlayContent) {
+    self.animation = animation
+    self._show = show
+    self.content = content
+    self.overlayContent = overlayContent
+  }
   
   @Environment(OverlayerManager.self) private var properties
   @State private var viewID: String?
