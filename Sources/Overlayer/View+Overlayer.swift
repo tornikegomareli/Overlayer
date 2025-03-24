@@ -31,3 +31,33 @@ public extension View {
       .modifier(OverlayerModifier(animation: animation, show: isPresented, viewContent: content))
   }
 }
+
+extension View {
+  /// Convenience function to wrap a view in an OverlayerContainer
+  func withOverlayer<Item: Equatable, OverlayContent: View>(
+    item: Binding<Item?>,
+    animation: Animation = .default,
+    @ViewBuilder content: @escaping (Item) -> OverlayContent
+  ) -> some View {
+    OverlayerContainer(
+      animation: animation,
+      item: item,
+      content: { self },
+      overlayContent: content
+    )
+  }
+  
+  /// Convenience function to wrap a view in an OverlayerToggleContainer
+  func withOverlayer<OverlayContent: View>(
+    isPresented: Binding<Bool>,
+    animation: Animation = .default,
+    @ViewBuilder content: @escaping () -> OverlayContent
+  ) -> some View {
+    OverlayerToggleContainer(
+      animation: animation,
+      show: isPresented,
+      content: { self },
+      overlayContent: content
+    )
+  }
+}
