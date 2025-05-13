@@ -10,12 +10,12 @@ import SwiftUI
 
 /// Container view that handles displaying an overlay when an optional item is present
 public struct OverlayerContainer<Content: View, Item: Equatable, OverlayContent: View>: View {
-  var animation: Animation = .default
+  var animation: Animation? = .default
   @Binding var item: Item?
   @ViewBuilder var content: () -> Content
   @ViewBuilder var overlayContent: (Item) -> OverlayContent
   
-  public init(animation: Animation, item: Binding<Item?>, content: @escaping () -> Content, overlayContent: @escaping (Item) -> OverlayContent) {
+  public init(animation: Animation?, item: Binding<Item?>, content: @escaping () -> Content, overlayContent: @escaping (Item) -> OverlayContent) {
     self.animation = animation
     self._item = item
     self.content = content
@@ -48,15 +48,25 @@ public struct OverlayerContainer<Content: View, Item: Equatable, OverlayContent:
       
       removeView()
       
-      withAnimation(animation) {
+      if let animation {
+        withAnimation(animation) {
+          properties.views.append(.init(id: viewID, view: .init(overlayContent(item))))
+        }
+      } else {
         properties.views.append(.init(id: viewID, view: .init(overlayContent(item))))
       }
+        
+      properties.window?.makeKeyAndVisible()
     }
   }
   
   private func removeView() {
     if let viewID {
-      withAnimation(animation) {
+      if let animation {
+        withAnimation(animation) {
+          properties.views.removeAll(where: { $0.id == viewID })
+        }
+      } else {
         properties.views.removeAll(where: { $0.id == viewID })
       }
       
@@ -66,12 +76,12 @@ public struct OverlayerContainer<Content: View, Item: Equatable, OverlayContent:
 }
 
 public struct OverlayerToggleContainer<Content: View, OverlayContent: View>: View {
-  var animation: Animation = .default
+  var animation: Animation? = .default
   @Binding var show: Bool
   @ViewBuilder var content: () -> Content
   @ViewBuilder var overlayContent: () -> OverlayContent
   
-  public init(animation: Animation, show: Binding<Bool>, content: @escaping () -> Content, overlayContent: @escaping () -> OverlayContent) {
+  public init(animation: Animation?, show: Binding<Bool>, content: @escaping () -> Content, overlayContent: @escaping () -> OverlayContent) {
     self.animation = animation
     self._show = show
     self.content = content
@@ -97,7 +107,11 @@ public struct OverlayerToggleContainer<Content: View, OverlayContent: View>: Vie
       viewID = UUID().uuidString
       guard let viewID else { return }
       
-      withAnimation(animation) {
+      if let animation {
+        withAnimation(animation) {
+          properties.views.append(.init(id: viewID, view: .init(overlayContent())))
+        }
+      } else {
         properties.views.append(.init(id: viewID, view: .init(overlayContent())))
       }
     }
@@ -105,7 +119,11 @@ public struct OverlayerToggleContainer<Content: View, OverlayContent: View>: Vie
   
   private func removeView() {
     if let viewID {
-      withAnimation(animation) {
+      if let animation {
+        withAnimation(animation) {
+          properties.views.removeAll(where: { $0.id == viewID })
+        }
+      } else {
         properties.views.removeAll(where: { $0.id == viewID })
       }
       

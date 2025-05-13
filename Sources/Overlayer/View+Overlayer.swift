@@ -11,7 +11,7 @@ import SwiftUI
 public extension View {
   @ViewBuilder
   func overlayer<Item: Equatable, Content: View>(
-    animation: Animation = .snappy,
+    animation: Animation? = .snappy,
     item: Binding<Item?>,
     @ViewBuilder content: @escaping (Item) -> Content
   ) -> some View {
@@ -23,7 +23,7 @@ public extension View {
 public extension View {
   @ViewBuilder
   func overlayer<Content: View>(
-    animation: Animation = .snappy,
+    animation: Animation? = .snappy,
     isPresented: Binding<Bool>,
     @ViewBuilder content: @escaping () -> Content
   ) -> some View {
@@ -36,7 +36,7 @@ extension View {
   /// Convenience function to wrap a view in an OverlayerContainer
   func withOverlayer<Item: Equatable, OverlayContent: View>(
     item: Binding<Item?>,
-    animation: Animation = .default,
+    animation: Animation? = .default,
     @ViewBuilder content: @escaping (Item) -> OverlayContent
   ) -> some View {
     OverlayerContainer(
@@ -50,7 +50,7 @@ extension View {
   /// Convenience function to wrap a view in an OverlayerToggleContainer
   func withOverlayer<OverlayContent: View>(
     isPresented: Binding<Bool>,
-    animation: Animation = .default,
+    animation: Animation? = .default,
     @ViewBuilder content: @escaping () -> OverlayContent
   ) -> some View {
     OverlayerToggleContainer(
