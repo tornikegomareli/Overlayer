@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct OverlayerOptionalModifier<Item: Equatable, ViewContent: View>: ViewModifier {
-  var animation: Animation
+  var animation: Animation?
   @Binding var item: Item?
   @ViewBuilder var viewContent: (Item) -> ViewContent
   
@@ -38,15 +38,25 @@ struct OverlayerOptionalModifier<Item: Equatable, ViewContent: View>: ViewModifi
       
       removeView()
       
-      withAnimation(animation) {
+      if let animation {
+        withAnimation(animation) {
+          properties.views.append(.init(id: viewID, view: .init(viewContent(item))))
+        }
+      } else {
         properties.views.append(.init(id: viewID, view: .init(viewContent(item))))
       }
+      
+      properties.window?.makeKeyAndVisible()
     }
   }
   
   private func removeView() {
     if let viewID {
-      withAnimation(animation) {
+      if let animation {
+        withAnimation(animation) {
+          properties.views.removeAll(where: { $0.id == viewID })
+        }
+      } else {
         properties.views.removeAll(where: { $0.id == viewID })
       }
       
@@ -57,7 +67,7 @@ struct OverlayerOptionalModifier<Item: Equatable, ViewContent: View>: ViewModifi
 
 
 struct OverlayerModifier<ViewContent: View>: ViewModifier {
-  var animation: Animation
+  var animation: Animation?
   @Binding var show: Bool
   @ViewBuilder var viewContent: ViewContent
 
@@ -80,15 +90,25 @@ struct OverlayerModifier<ViewContent: View>: ViewModifier {
       viewID = UUID().uuidString
       guard let viewID else { return }
       
-      withAnimation(animation) {
+      if let animation {
+        withAnimation(animation) {
+          properties.views.append(.init(id: viewID, view: .init(viewContent)))
+        }
+      } else {
         properties.views.append(.init(id: viewID, view: .init(viewContent)))
       }
+      
+      properties.window?.makeKeyAndVisible()
     }
   }
   
   private func removeView() {
     if let viewID {
-      withAnimation(animation) {
+      if let animation {
+        withAnimation(animation) {
+          properties.views.removeAll(where: { $0.id == viewID })
+        }
+      } else {
         properties.views.removeAll(where: { $0.id == viewID })
       }
       
