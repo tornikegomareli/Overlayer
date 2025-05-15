@@ -120,6 +120,9 @@ All overlays support standard SwiftUI transitions and animations:
 }
 ```
 
+To disable the built-in animation and take full control over the source and destination view animations yourself, pass nil for the animation parameter. 
+This will make the transition occur immediately, allowing you to orchestrate your own animations.
+
 ## Requirements
 
 - iOS 17.0+
